@@ -8,9 +8,21 @@
 
 /* Begin PBXBuildFile section */
 		ABB9D3282AE0351B00A7F843 /* WeatherNetworking.docc in Sources */ = {isa = PBXBuildFile; fileRef = ABB9D3272AE0351B00A7F843 /* WeatherNetworking.docc */; };
-		ABB9D32E2AE0351B00A7F843 /* WeatherNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABB9D3232AE0351B00A7F843 /* WeatherNetworking.framework */; };
+		ABB9D32E2AE0351B00A7F843 /* WeatherNetworkingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABB9D3232AE0351B00A7F843 /* WeatherNetworkingKit.framework */; };
 		ABB9D3332AE0351B00A7F843 /* WeatherNetworkingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB9D3322AE0351B00A7F843 /* WeatherNetworkingTests.swift */; };
 		ABB9D3342AE0351B00A7F843 /* WeatherNetworking.h in Headers */ = {isa = PBXBuildFile; fileRef = ABB9D3262AE0351B00A7F843 /* WeatherNetworking.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ABB9D34E2AE0358F00A7F843 /* MockAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB9D33F2AE0358F00A7F843 /* MockAPIService.swift */; };
+		ABB9D34F2AE0358F00A7F843 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB9D3412AE0358F00A7F843 /* ImageLoader.swift */; };
+		ABB9D3502AE0358F00A7F843 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB9D3422AE0358F00A7F843 /* APIService.swift */; };
+		ABB9D3512AE0358F00A7F843 /* Locations.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB9D3442AE0358F00A7F843 /* Locations.swift */; };
+		ABB9D3522AE0358F00A7F843 /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB9D3452AE0358F00A7F843 /* DataModel.swift */; };
+		ABB9D3532AE0358F00A7F843 /* Forecasts.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB9D3462AE0358F00A7F843 /* Forecasts.swift */; };
+		ABB9D3542AE0358F00A7F843 /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB9D3472AE0358F00A7F843 /* Endpoint.swift */; };
+		ABB9D3552AE0358F00A7F843 /* Decimal+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB9D3492AE0358F00A7F843 /* Decimal+Ext.swift */; };
+		ABB9D3562AE0358F00A7F843 /* Publisher+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB9D34A2AE0358F00A7F843 /* Publisher+Ext.swift */; };
+		ABB9D3572AE0358F00A7F843 /* Forecast.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB9D34C2AE0358F00A7F843 /* Forecast.swift */; };
+		ABB9D3582AE0358F00A7F843 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB9D34D2AE0358F00A7F843 /* Location.swift */; };
+		ABB9D35B2AE0359C00A7F843 /* buildFramework.sh in Resources */ = {isa = PBXBuildFile; fileRef = ABB9D35A2AE0359C00A7F843 /* buildFramework.sh */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -24,11 +36,23 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		ABB9D3232AE0351B00A7F843 /* WeatherNetworking.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WeatherNetworking.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		ABB9D3232AE0351B00A7F843 /* WeatherNetworkingKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WeatherNetworkingKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		ABB9D3262AE0351B00A7F843 /* WeatherNetworking.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WeatherNetworking.h; sourceTree = "<group>"; };
 		ABB9D3272AE0351B00A7F843 /* WeatherNetworking.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = WeatherNetworking.docc; sourceTree = "<group>"; };
 		ABB9D32D2AE0351B00A7F843 /* WeatherNetworkingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WeatherNetworkingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		ABB9D3322AE0351B00A7F843 /* WeatherNetworkingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherNetworkingTests.swift; sourceTree = "<group>"; };
+		ABB9D33F2AE0358F00A7F843 /* MockAPIService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockAPIService.swift; sourceTree = "<group>"; };
+		ABB9D3412AE0358F00A7F843 /* ImageLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
+		ABB9D3422AE0358F00A7F843 /* APIService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
+		ABB9D3442AE0358F00A7F843 /* Locations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Locations.swift; sourceTree = "<group>"; };
+		ABB9D3452AE0358F00A7F843 /* DataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
+		ABB9D3462AE0358F00A7F843 /* Forecasts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Forecasts.swift; sourceTree = "<group>"; };
+		ABB9D3472AE0358F00A7F843 /* Endpoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
+		ABB9D3492AE0358F00A7F843 /* Decimal+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Decimal+Ext.swift"; sourceTree = "<group>"; };
+		ABB9D34A2AE0358F00A7F843 /* Publisher+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Publisher+Ext.swift"; sourceTree = "<group>"; };
+		ABB9D34C2AE0358F00A7F843 /* Forecast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Forecast.swift; sourceTree = "<group>"; };
+		ABB9D34D2AE0358F00A7F843 /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
+		ABB9D35A2AE0359C00A7F843 /* buildFramework.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = buildFramework.sh; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,7 +67,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ABB9D32E2AE0351B00A7F843 /* WeatherNetworking.framework in Frameworks */,
+				ABB9D32E2AE0351B00A7F843 /* WeatherNetworkingKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -62,7 +86,7 @@
 		ABB9D3242AE0351B00A7F843 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				ABB9D3232AE0351B00A7F843 /* WeatherNetworking.framework */,
+				ABB9D3232AE0351B00A7F843 /* WeatherNetworkingKit.framework */,
 				ABB9D32D2AE0351B00A7F843 /* WeatherNetworkingTests.xctest */,
 			);
 			name = Products;
@@ -71,6 +95,8 @@
 		ABB9D3252AE0351B00A7F843 /* WeatherNetworking */ = {
 			isa = PBXGroup;
 			children = (
+				ABB9D3592AE0359C00A7F843 /* Utils */,
+				ABB9D33D2AE0358F00A7F843 /* Source */,
 				ABB9D3262AE0351B00A7F843 /* WeatherNetworking.h */,
 				ABB9D3272AE0351B00A7F843 /* WeatherNetworking.docc */,
 			);
@@ -83,6 +109,72 @@
 				ABB9D3322AE0351B00A7F843 /* WeatherNetworkingTests.swift */,
 			);
 			path = WeatherNetworkingTests;
+			sourceTree = "<group>";
+		};
+		ABB9D33D2AE0358F00A7F843 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				ABB9D33E2AE0358F00A7F843 /* Mocks */,
+				ABB9D3402AE0358F00A7F843 /* Network */,
+				ABB9D3482AE0358F00A7F843 /* Extensions */,
+				ABB9D34B2AE0358F00A7F843 /* Model */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
+		ABB9D33E2AE0358F00A7F843 /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				ABB9D33F2AE0358F00A7F843 /* MockAPIService.swift */,
+			);
+			path = Mocks;
+			sourceTree = "<group>";
+		};
+		ABB9D3402AE0358F00A7F843 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				ABB9D3412AE0358F00A7F843 /* ImageLoader.swift */,
+				ABB9D3422AE0358F00A7F843 /* APIService.swift */,
+				ABB9D3432AE0358F00A7F843 /* Services */,
+				ABB9D3472AE0358F00A7F843 /* Endpoint.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		ABB9D3432AE0358F00A7F843 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				ABB9D3442AE0358F00A7F843 /* Locations.swift */,
+				ABB9D3452AE0358F00A7F843 /* DataModel.swift */,
+				ABB9D3462AE0358F00A7F843 /* Forecasts.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		ABB9D3482AE0358F00A7F843 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				ABB9D3492AE0358F00A7F843 /* Decimal+Ext.swift */,
+				ABB9D34A2AE0358F00A7F843 /* Publisher+Ext.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		ABB9D34B2AE0358F00A7F843 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				ABB9D34C2AE0358F00A7F843 /* Forecast.swift */,
+				ABB9D34D2AE0358F00A7F843 /* Location.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		ABB9D3592AE0359C00A7F843 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				ABB9D35A2AE0359C00A7F843 /* buildFramework.sh */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -99,9 +191,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		ABB9D3222AE0351B00A7F843 /* WeatherNetworking */ = {
+		ABB9D3222AE0351B00A7F843 /* WeatherNetworkingKit */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = ABB9D3372AE0351B00A7F843 /* Build configuration list for PBXNativeTarget "WeatherNetworking" */;
+			buildConfigurationList = ABB9D3372AE0351B00A7F843 /* Build configuration list for PBXNativeTarget "WeatherNetworkingKit" */;
 			buildPhases = (
 				ABB9D31E2AE0351B00A7F843 /* Headers */,
 				ABB9D31F2AE0351B00A7F843 /* Sources */,
@@ -112,9 +204,9 @@
 			);
 			dependencies = (
 			);
-			name = WeatherNetworking;
+			name = WeatherNetworkingKit;
 			productName = WeatherNetworking;
-			productReference = ABB9D3232AE0351B00A7F843 /* WeatherNetworking.framework */;
+			productReference = ABB9D3232AE0351B00A7F843 /* WeatherNetworkingKit.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		ABB9D32C2AE0351B00A7F843 /* WeatherNetworkingTests */ = {
@@ -166,7 +258,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				ABB9D3222AE0351B00A7F843 /* WeatherNetworking */,
+				ABB9D3222AE0351B00A7F843 /* WeatherNetworkingKit */,
 				ABB9D32C2AE0351B00A7F843 /* WeatherNetworkingTests */,
 			);
 		};
@@ -177,6 +269,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ABB9D35B2AE0359C00A7F843 /* buildFramework.sh in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -194,7 +287,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ABB9D34E2AE0358F00A7F843 /* MockAPIService.swift in Sources */,
 				ABB9D3282AE0351B00A7F843 /* WeatherNetworking.docc in Sources */,
+				ABB9D3542AE0358F00A7F843 /* Endpoint.swift in Sources */,
+				ABB9D3532AE0358F00A7F843 /* Forecasts.swift in Sources */,
+				ABB9D3562AE0358F00A7F843 /* Publisher+Ext.swift in Sources */,
+				ABB9D3502AE0358F00A7F843 /* APIService.swift in Sources */,
+				ABB9D3512AE0358F00A7F843 /* Locations.swift in Sources */,
+				ABB9D34F2AE0358F00A7F843 /* ImageLoader.swift in Sources */,
+				ABB9D3522AE0358F00A7F843 /* DataModel.swift in Sources */,
+				ABB9D3572AE0358F00A7F843 /* Forecast.swift in Sources */,
+				ABB9D3582AE0358F00A7F843 /* Location.swift in Sources */,
+				ABB9D3552AE0358F00A7F843 /* Decimal+Ext.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -211,7 +315,7 @@
 /* Begin PBXTargetDependency section */
 		ABB9D3302AE0351B00A7F843 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = ABB9D3222AE0351B00A7F843 /* WeatherNetworking */;
+			target = ABB9D3222AE0351B00A7F843 /* WeatherNetworkingKit */;
 			targetProxy = ABB9D32F2AE0351B00A7F843 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -356,6 +460,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -387,6 +492,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -407,6 +513,7 @@
 		ABB9D33B2AE0351B00A7F843 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = M389YZ88HF;
@@ -423,6 +530,7 @@
 		ABB9D33C2AE0351B00A7F843 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = M389YZ88HF;
@@ -448,7 +556,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		ABB9D3372AE0351B00A7F843 /* Build configuration list for PBXNativeTarget "WeatherNetworking" */ = {
+		ABB9D3372AE0351B00A7F843 /* Build configuration list for PBXNativeTarget "WeatherNetworkingKit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				ABB9D3382AE0351B00A7F843 /* Debug */,

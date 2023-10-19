@@ -10,6 +10,9 @@ import Combine
 
 extension APIService {
     
+    /// Publishes the forecasts associated with an array of locations.
+    /// - Parameter locations: array of locations
+    /// - Returns: array of forecasts
     public func getForecasts(locations: [Location]) -> AnyPublisher<Result<[Forecast], Error>, Never> {
         guard locations.isEmpty == false else {
             let emptyResult: Result<[Forecast], Error> = .success([])

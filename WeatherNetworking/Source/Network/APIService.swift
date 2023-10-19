@@ -55,6 +55,7 @@ private struct APIErrorMessage: Decodable {
     }
 }
 
+/// Provides Combine-enabled wrapper services to the OpenWeather API.
 public class APIService: APIServiceProtocol {
     
     public static let shared = APIService()

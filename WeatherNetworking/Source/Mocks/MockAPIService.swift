@@ -8,7 +8,8 @@
 import Foundation
 import Combine
 
-public class MockAPIService: APIServiceProtocol {
+/// Mocks the Combine-enabled API service by implementing APIServiceProtocol, publishing locally-held JSON responses to service requests.
+public class MockAPIService {
 
     public init() { }
 
@@ -16,7 +17,12 @@ public class MockAPIService: APIServiceProtocol {
         let emptyResult: Result<[LocationDataModel], Error> = .success([])
         return Just(emptyResult).eraseToAnyPublisher()
     }
-
+    
+    /// Publishes the mocked forecasts associated with an array of locations. Daily and hourly timestamps loaded form the mock data is overwritten to reflect the current date.
+    ///
+    ///  Mock forecast data must be available in JSON files with names formated as OneCall(<latitude>,<longitude>).json, e.g. OneCall(35.71,139.454).json. JSON structure to be added to this doc asap.
+    /// - Parameter locations: array of locations
+    /// - Returns: array of forecasts
     public func getForecasts(locations: [Location]) -> AnyPublisher<Result<[Forecast], Error>, Never> {
         guard locations.isEmpty == false else {
             let emptyResult: Result<[Forecast], Error> = .success([])
@@ -26,7 +32,7 @@ public class MockAPIService: APIServiceProtocol {
         var forecasts: [Forecast] = []
         for location in locations {
             do {
-                let forecast = try getForecast(for: location, from: locations)
+                let forecast = try getForecast(for: location.coordinates, from: locations)
                 forecasts.append(forecast)
             }
             catch {
@@ -39,8 +45,15 @@ public class MockAPIService: APIServiceProtocol {
         return Just(result).eraseToAnyPublisher()
     }
 
-    public func getForecast(for location: Location, from locations: [Location]) throws -> Forecast {
-        let filename = "OneCall(\(location.coordinates.latitude.rounded(3)),\(location.coordinates.longitude.rounded(3)))"
+    /// Publishes the mocked forecast associated with a set of coordinates (these coordinates must match that of a location in a given array of locations so that information such as location name can be injected into the returned object). Daily and hourly timestamps loaded from the mock data is overwritten to reflect the current date.
+    ///
+    ///  Mock forecast data must be available in JSON files with names formated as OneCall(<latitude>,<longitude>).json, e.g. OneCall(35.71,139.454).json. JSON structure to be added to this doc asap.
+    /// - Parameters:
+    ///   - coordinates: coordinates of location whose forecast is required
+    ///   - locations: array of locations
+    /// - Returns: forecast
+    public func getForecast(for coordinates: DecimalCoordinates, from locations: [Location]) throws -> Forecast {
+        let filename = "OneCall(\(coordinates.latitude.rounded(3)),\(coordinates.longitude.rounded(3)))"
         let dataModel: OneCallDataModel = try decodeJSON(from: filename)
         var forecast = dataModel.toModel()
         forecast.loadLocation(with: (dataModel.lat, dataModel.lon), from: locations)

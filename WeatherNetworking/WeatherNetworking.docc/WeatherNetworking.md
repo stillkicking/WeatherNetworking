@@ -1,8 +1,8 @@
-# ``WeatherNetworking``
+# ``WeatherNetworkingKit``
 
 <!--@START_MENU_TOKEN@-->Summary<!--@END_MENU_TOKEN@-->
 
-## Overview
+## Provides Combine-enabled wrapper services to the OpenWeather API. 
 
 <!--@START_MENU_TOKEN@-->Text<!--@END_MENU_TOKEN@-->
 

@@ -15,7 +15,8 @@ public class Location {
     public var name: String
     public var state: String
     public var country: String
-
+    
+    ///  A string describing the name of the location, optionally appended with its state, e.g. London, Rome (Lazio)
     public var fullName: String {
         let stateDescr = state.isEmpty ? "" : " (\(state))"
         return "\(name)\(stateDescr)"

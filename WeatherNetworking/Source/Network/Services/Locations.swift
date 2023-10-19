@@ -21,6 +21,9 @@ extension APIService {
     
     typealias LocationPublisher = AnyPublisher<[Location], Error>
 
+    /// Publishes an array of locations whose name matches a search string
+    /// - Parameter query: search string
+    /// - Returns: array of matching locations
     public func getLocations(query: String) -> AnyPublisher<Result<[LocationDataModel], Error>, Never> {
         get(endpoint: .locationSearch(for: query))
             .map{ $0 }

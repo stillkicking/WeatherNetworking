@@ -1,11 +1,12 @@
 echo '...delete the iPhone archive'
 rm -r '../../archives/WeatherNetworkingiOS.xcarchive'
 
-#echo '...build the iPhone documentation'
-#xcodebuild docbuild \
-#-scheme WeatherNetworkingKit \
-#-destination 'generic/platform=iOS' \
-#-quiet
+echo '...build the iPhone documentation'
+xcodebuild docbuild \
+-project ../../WeatherNetworking.xcodeproj \
+-scheme WeatherNetworkingKit \
+-destination 'generic/platform=iOS' \
+-quiet
 
 echo '...build the iPhone framework'
 xcodebuild archive \
@@ -20,11 +21,12 @@ BUILD_LIBRARY_FOR_DISTRIBUTION=YES
 echo '...delete iPhone Simulator archive'
 rm -r '../../archives/WeatherNetworkingSimulator.xcarchive'
 
-#echo '...build the iPhone Simulator documentation'
-#xcodebuild docbuild \
-#-scheme WeatherNetworkingKit \
-#-destination 'generic/platform=iOS Simulator' \
-#-quiet
+echo '...build the iPhone Simulator documentation'
+xcodebuild docbuild \
+-project ../../WeatherNetworking.xcodeproj \
+-scheme WeatherNetworkingKit \
+-destination 'generic/platform=iOS Simulator' \
+-quiet
 
 echo '...build the iPhone Simulator framework'
 xcodebuild archive \
@@ -41,4 +43,11 @@ rm -r '../../xcframeworks/WeatherNetworkingKit.xcframework'
 xcodebuild -create-xcframework \
 -archive "../../archives/WeatherNetworkingSimulator.xcarchive" -framework WeatherNetworkingKit.framework \
 -archive "../../archives/WeatherNetworkingiOS.xcarchive" -framework WeatherNetworkingKit.framework \
--output "../../xcframeworks/WeatherNetworkingKit.xcframework"
+-output "../../xcframeworks/WeatherNetworkingKit.xcframework" \
+
+echo '...zip up the xcframework'
+ditto -c -k --sequesterRsrc --keepParent "../../xcframeworks/WeatherNetworkingKit.xcframework" "../../xcframeworks/WeatherNetworkingKit.xcframework.zip"
+
+echo '...generating zip checksum:'
+swift package compute-checksum "../../xcframeworks/WeatherNetworkingKit.xcframework.zip"
+

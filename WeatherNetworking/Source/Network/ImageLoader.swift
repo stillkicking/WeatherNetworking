@@ -8,27 +8,34 @@
 import Foundation
 import UIKit
 
+/// Provides access to the icons & images provided by the OpenWeather service
 @globalActor public actor ImageLoader {
     
     public static let shared = ImageLoader()
 
     private var images: [URLRequest: LoaderStatus] = [:]
     
-    public static func imageURL(for iconId: String) -> URL? {
+    /// Returns an optional URL to download an OpenWeather icon
+    /// - Parameter iconId: id of weather icon
+    /// - Returns: URL  to download the weather icon associated with  iconId (nil if iconID is not valid in a URL query string)
+    public static func iconURL(for iconId: String) -> URL? {
         URL(string: "https://openweathermap.org/img/wn/\(iconId)@2x.png")
     }
-
-    public func fetchIcon(id: String) async throws -> UIImage? {
-        guard let url = ImageLoader.imageURL(for: id) else { return nil }
+    
+    /// Asynchronously returns an OpenWeather weather icon
+    /// - Parameter iconId: id of weather icon
+    /// - Returns: the weather icon (nil if not found)
+    public func fetchIcon(for iconId: String) async throws -> UIImage? {
+        guard let url = ImageLoader.iconURL(for: iconId) else { return nil }
         return try await fetch(url)
     }
 
-    public func fetch(_ url: URL) async throws -> UIImage? {
+    func fetch(_ url: URL) async throws -> UIImage? {
         let request = URLRequest(url: url)
         return try await fetch(request)
     }
 
-    public func fetch(_ urlRequest: URLRequest) async throws -> UIImage? {
+    func fetch(_ urlRequest: URLRequest) async throws -> UIImage? {
         if let status = images[urlRequest] {
             switch status {
             case .fetched(let image):

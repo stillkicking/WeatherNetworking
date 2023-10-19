@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 /// Mocks the Combine-enabled API service by implementing APIServiceProtocol, publishing locally-held JSON responses to service requests.
-public class MockAPIService {
+public class MockAPIService: APIServiceProtocol {
 
     public init() { }
 

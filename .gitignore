@@ -33,8 +33,7 @@ Temporary Items
 .apdisk
 
 ## project specific
-archives/
-xcframeworks/
+build/
 
 ### Swift ###
 # Xcode

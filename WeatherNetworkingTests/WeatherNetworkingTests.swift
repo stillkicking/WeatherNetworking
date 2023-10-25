@@ -6,7 +6,7 @@
 //
 
 import XCTest
-@testable import WeatherNetworking
+@testable import WeatherNetworkingKit
 
 final class WeatherNetworkingTests: XCTestCase {
 

@@ -52,16 +52,17 @@ public class MockAPIService: APIServiceProtocol {
     ///   - coordinates: coordinates of location whose forecast is required
     ///   - locations: array of locations
     /// - Returns: forecast
-    public func getForecast(for coordinates: DecimalCoordinates, from locations: [Location]) throws -> Forecast {
+    public func getForecast(for coordinates: DecimalCoordinates, from locations: [Location], in bundle: Bundle = .main) throws -> Forecast {
         let filename = "OneCall(\(coordinates.latitude.rounded(3)),\(coordinates.longitude.rounded(3)))"
-        let dataModel: OneCallDataModel = try decodeJSON(from: filename)
+        let dataModel: OneCallDataModel = try decodeJSON(from: filename, in: bundle)
         var forecast = dataModel.toModel()
         forecast.loadLocation(with: (dataModel.lat, dataModel.lon), from: locations)
         forecast.resetDailyDates()
         return forecast
     }
 
-    private func decodeJSON<T: Decodable>(from resource: String, type: String = "json", in bundle: Bundle = .main) throws -> T {
+    private func decodeJSON<T: Decodable>(from resource: String, type: String = "json", in bundle: Bundle) throws -> T {
+        print("\(Bundle.main.bundleIdentifier!)")
         let data: Data
         if let filepath = bundle.path(forResource: resource, ofType: type) {
             let json = try String(contentsOfFile: filepath)

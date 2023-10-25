@@ -46,12 +46,17 @@ struct OneCallDataModel: DataModel {
     var lat: Decimal
     var lon: Decimal
     var timezone: String
+    var timezone_offset: Int
     var daily: [DailyDataModel]
     var hourly: [HourlyDataModel]
 
     func toModel() -> Forecast {
-        return Forecast.init(daily: daily.map{ $0.toModel() },
-                             hourly: hourly.map{ $0.toModel() })
+        var forecast = Forecast.init(timezone: timezone,
+                                     timezoneOffset: timezone_offset,
+                                     daily: daily.map{ $0.toModel() },
+                                     hourly: hourly.map{ $0.toModel() })
+        forecast.setHourlyLastForecastOfDay()
+        return forecast
     }
 }
 
@@ -98,21 +103,22 @@ struct HourlyDataModel: DataModel {
     var weather: [WeatherDataModel]
 
     func toModel() -> HourlyForecast {
-        HourlyForecast.init(date: Date(timeIntervalSince1970: dt),
-                            temp: temp,
-                            feels_like: feels_like,
-                            pressure: pressure,
-                            humidity: humidity,
-                            dew_point: dew_point,
-                            uvIndex: uvi,
-                            cloudCoverage: clouds,
-                            visibility: visibility,
-                            precipitation: pop,
-                            windSpeed: wind_speed,
-                            windDirection: wind_deg,
-                            windGust: wind_gust,
-                            displayable: weather.map { $0.toModel() })
-        }
+        let detail = HourlyForecastDetail(temp: temp,
+                                          feels_like: feels_like,
+                                          pressure: pressure,
+                                          humidity: humidity,
+                                          dew_point: dew_point,
+                                          uvIndex: uvi,
+                                          cloudCoverage: clouds,
+                                          visibility: visibility,
+                                          precipitation: pop,
+                                          windSpeed: wind_speed,
+                                          windDirection: wind_deg,
+                                          windGust: wind_gust,
+                                          displayable: weather.map { $0.toModel() })
+
+        return HourlyForecast.init(date: Date(timeIntervalSince1970: dt), detail: detail)
+    }
 }
 
 struct DailyTempDataModel: DataModel {

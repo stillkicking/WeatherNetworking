@@ -9,6 +9,9 @@ import Foundation
 
 public struct Forecast {
     public var location: Location?
+    public let timezone: String
+    /// timezone offset in seconds from UTC
+    public let timezoneOffset: Int
     public var daily: [DailyForecast]
     public var hourly: [HourlyForecast]
 
@@ -25,6 +28,24 @@ public struct Forecast {
             latitude == $0.coordinates.latitude.rounded(places) &&
             longitude == $0.coordinates.longitude.rounded(places)
         }
+    }
+    
+    mutating func setHourlyLastForecastOfDay() {
+
+        for index in 0..<hourly.count {
+            let lastForecastOfDay: Bool
+            if let currHourComponent = hourly[index].date.hours(timezoneOffset),
+               let nextHourComponent = hourly[safe: index + 1]?.date.hours(timezoneOffset) {
+                lastForecastOfDay = nextHourComponent < currHourComponent
+            } else {
+                lastForecastOfDay = index == hourly.count - 1
+            }
+            hourly[index].isLastForecastOfDay = lastForecastOfDay
+        }
+    }
+
+    public mutating func appendEmptyHourlyForecast(with date: Date, lastForecastOfDay: Bool) {
+        hourly.append(HourlyForecast(date: date, isLastForecastOfDay: lastForecastOfDay, detail: nil))
     }
 }
 
@@ -45,6 +66,11 @@ public struct DailyForecast: Identifiable {
 public struct HourlyForecast: Identifiable {
     public let id = UUID()
     public var date: Date
+    public var isLastForecastOfDay: Bool?
+    public let detail: HourlyForecastDetail?
+}
+
+public struct HourlyForecastDetail {
     public let temp: Decimal
     public let feels_like: Decimal
     public let pressure: Int

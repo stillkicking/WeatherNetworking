@@ -2,7 +2,7 @@ while getopts ":hv:" option; do
     case $option in
     v)
     VERSION_FOLDER=v$OPTARG
-    VERSION_SUFFIX=_$OPTARG
+    VERSION_SUFFIX=-$OPTARG
     ;;
     h)
     echo "Generates iPhone and Simulator archives and a zipped xcframework for WeatherNetworking"

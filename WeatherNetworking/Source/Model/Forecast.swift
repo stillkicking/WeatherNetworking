@@ -10,8 +10,8 @@ import Foundation
 public struct Forecast {
     public var location: Location?
     public let timezone: String
-    /// timezone offset in seconds from UTC
-    public let timezoneOffset: Int
+    /// timezone offset in seconds from GMT
+    public var timezoneOffset: Int
     public var daily: [DailyForecast]
     public var hourly: [HourlyForecast]
 
@@ -31,12 +31,14 @@ public struct Forecast {
     }
     
     mutating func setHourlyLastForecastOfDay() {
-
+        guard let timezone = TimeZone(secondsFromGMT: timezoneOffset) else { return }
+        var calendar = Calendar.current
+        calendar.timeZone = timezone
+        
         for index in 0..<hourly.count {
             let lastForecastOfDay: Bool
-            if let currHourComponent = hourly[index].date.hours(timezoneOffset),
-               let nextHourComponent = hourly[safe: index + 1]?.date.hours(timezoneOffset) {
-                lastForecastOfDay = nextHourComponent < currHourComponent
+            if let nextDate = hourly[safe: index + 1]?.date {
+                lastForecastOfDay = nextDate.isNotSameDayAndLater(hourly[index].date, calendar: calendar)
             } else {
                 lastForecastOfDay = index == hourly.count - 1
             }
@@ -44,8 +46,19 @@ public struct Forecast {
         }
     }
 
-    public mutating func appendEmptyHourlyForecast(with date: Date, lastForecastOfDay: Bool) {
-        hourly.append(HourlyForecast(date: date, isLastForecastOfDay: lastForecastOfDay, detail: nil))
+    mutating func appendMissingHourlyForecasts() {
+        guard let timezone = TimeZone(secondsFromGMT: timezoneOffset) else { return }
+        var calendar = Calendar.current
+        calendar.timeZone = timezone
+
+        guard let dayAfterLast = daily.last?.date.nextDay,
+              var currHourlyDate = hourly.last?.date.nextDay else { return }
+        
+        let lastDateAtMidnight = calendar.startOfDay(for: dayAfterLast).addingTimeInterval(-1)
+        while currHourlyDate < lastDateAtMidnight {
+            hourly.append(HourlyForecast(date: currHourlyDate, isLastForecastOfDay: true, detail: nil))
+            currHourlyDate = currHourlyDate.nextDay
+        }
     }
 }
 
@@ -66,7 +79,7 @@ public struct DailyForecast: Identifiable {
 public struct HourlyForecast: Identifiable {
     public let id = UUID()
     public var date: Date
-    public var isLastForecastOfDay: Bool?
+    public var isLastForecastOfDay: Bool
     public let detail: HourlyForecastDetail?
 }
 

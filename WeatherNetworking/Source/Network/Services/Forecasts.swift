@@ -56,6 +56,7 @@ struct OneCallDataModel: DataModel {
                                      daily: daily.map{ $0.toModel() },
                                      hourly: hourly.map{ $0.toModel() })
         forecast.setHourlyLastForecastOfDay()
+        forecast.appendMissingHourlyForecasts()
         return forecast
     }
 }
@@ -117,7 +118,9 @@ struct HourlyDataModel: DataModel {
                                           windGust: wind_gust,
                                           displayable: weather.map { $0.toModel() })
 
-        return HourlyForecast.init(date: Date(timeIntervalSince1970: dt), detail: detail)
+        return HourlyForecast.init(date: Date(timeIntervalSince1970: dt),
+                                   isLastForecastOfDay: false,
+                                   detail: detail)
     }
 }
 

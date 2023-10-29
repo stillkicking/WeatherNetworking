@@ -45,7 +45,7 @@ public class MockAPIService: APIServiceProtocol {
         return Just(result).eraseToAnyPublisher()
     }
 
-    /// Publishes the mocked forecast associated with a set of coordinates (these coordinates must match that of a location in a given array of locations so that information such as location name can be injected into the returned object). Daily and hourly timestamps loaded from the mock data is overwritten to reflect the current date.
+    /// Publishes the mocked forecast associated with a set of coordinates (these coordinates must match that of a location in a given array of locations so that information such as location name can be injected into the returned object). Daily and hourly timestamps loaded from the mock data are reset to reflect a call date at the current time.
     ///
     ///  Mock forecast data must be available in JSON files with names formated as OneCall(<latitude>,<longitude>).json, e.g. OneCall(35.71,139.454).json. JSON structure to be added to this doc asap.
     /// - Parameters:
@@ -57,8 +57,15 @@ public class MockAPIService: APIServiceProtocol {
         let dataModel: OneCallDataModel = try decodeJSON(from: filename, in: bundle)
         var forecast = dataModel.toModel()
         forecast.loadLocation(with: (dataModel.lat, dataModel.lon), from: locations)
-        forecast.resetDailyDates()
+        forecast.resetDates()
+        forecast.setHourlyLastForecastOfDay()
         return forecast
+    }
+
+    func getOriginalTimezoneOffsetForForecast(for coordinates: DecimalCoordinates, from locations: [Location], in bundle: Bundle = .main) throws -> Int {
+        let filename = "OneCall(\(coordinates.latitude.rounded(3)),\(coordinates.longitude.rounded(3)))"
+        let dataModel: OneCallDataModel = try decodeJSON(from: filename, in: bundle)
+        return dataModel.timezone_offset
     }
 
     private func decodeJSON<T: Decodable>(from resource: String, type: String = "json", in bundle: Bundle) throws -> T {
@@ -74,12 +81,23 @@ public class MockAPIService: APIServiceProtocol {
    }
 }
 
-private extension Forecast {
-    mutating func resetDailyDates() {
-        let today = Date()
+extension Forecast {
+    static let secondsInEachHour: Double = 60 * 60
+    static let secondsInEachDay: Double = secondsInEachHour * 24
+    
+    mutating func resetDates() {
+        timezoneOffset = Calendar.current.timeZone.secondsFromGMT()
+        
+        let dailyStartDate = Date()
         for i in 0..<daily.count {
-            let secondsInEachDay = 60 * 60 * 24
-            daily[i].date = today.advanced(by: Double(i * secondsInEachDay))
+            daily[i].date = dailyStartDate.addingTimeInterval(Double(i) * Forecast.secondsInEachDay)
+        }
+       
+        let hourlyStartDate = dailyStartDate.startOfHour
+        var adjustment: Double = 0
+        for i in 0..<hourly.count {
+            adjustment += hourly[i].detail == nil ? Forecast.secondsInEachDay : Forecast.secondsInEachHour
+            hourly[i].date = hourlyStartDate.addingTimeInterval(adjustment)
         }
     }
 }

@@ -22,6 +22,11 @@ extension Date {
         addingTimeInterval(Double(86400))
     }
 
+    var startOfHour: Date {
+        // don't need to worry about timezone as the beginning of the hour is independent of that
+        startOf(.hour)
+    }
+
     private func startOf(_ dateComponent : Calendar.Component, secondsFromGMT: Int = 0) -> Date {
         var calendar = Calendar.current
         calendar.timeZone = TimeZone(secondsFromGMT: secondsFromGMT)!
@@ -47,11 +52,5 @@ extension Date {
         dateFormatter.dateFormat = "EEE"
         return dateFormatter.string(from: self).capitalized
     }
-    
-    var startOfHour: Date {
-        // don't need to worry about timezone as the beginning of the hour is independent of that
-        startOf(.hour)
-    }
-
 }
 #endif

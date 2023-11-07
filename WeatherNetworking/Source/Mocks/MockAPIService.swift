@@ -58,18 +58,11 @@ public class MockAPIService: APIServiceProtocol {
         var forecast = dataModel.toModel()
         forecast.loadLocation(with: (dataModel.lat, dataModel.lon), from: locations)
         forecast.resetDates()
-        forecast.setHourlyLastForecastOfDay()
+        forecast.setHourlyFirstForecastOfDay()
         return forecast
     }
 
-    func getOriginalTimezoneOffsetForForecast(for coordinates: DecimalCoordinates, from locations: [Location], in bundle: Bundle = .main) throws -> Int {
-        let filename = "OneCall(\(coordinates.latitude.rounded(3)),\(coordinates.longitude.rounded(3)))"
-        let dataModel: OneCallDataModel = try decodeJSON(from: filename, in: bundle)
-        return dataModel.timezone_offset
-    }
-
     private func decodeJSON<T: Decodable>(from resource: String, type: String = "json", in bundle: Bundle) throws -> T {
-        print("\(Bundle.main.bundleIdentifier!)")
         let data: Data
         if let filepath = bundle.path(forResource: resource, ofType: type) {
             let json = try String(contentsOfFile: filepath)

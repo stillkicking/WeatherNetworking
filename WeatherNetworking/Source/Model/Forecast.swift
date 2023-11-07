@@ -30,19 +30,20 @@ public struct Forecast {
         }
     }
     
-    mutating func setHourlyLastForecastOfDay() {
-        guard let timezone = TimeZone(secondsFromGMT: timezoneOffset) else { return }
+    mutating func setHourlyFirstForecastOfDay() {
+        guard let timezone = TimeZone(secondsFromGMT: timezoneOffset),
+              hourly.isEmpty == false else { return }
+        
         var calendar = Calendar.current
         calendar.timeZone = timezone
         
-        for index in 0..<hourly.count {
-            let lastForecastOfDay: Bool
-            if let nextDate = hourly[safe: index + 1]?.date {
-                lastForecastOfDay = nextDate.isNotSameDayAndLater(hourly[index].date, calendar: calendar)
-            } else {
-                lastForecastOfDay = index == hourly.count - 1
+        hourly[0].isFirstForecastOfDay = true // note - cannot use .first? here, but checked guard !isEmpty
+        
+        for index in 1..<hourly.count {
+            let currDate = hourly[index].date
+            if let previousDate = hourly[safe: index - 1]?.date {
+                hourly[index].isFirstForecastOfDay = currDate.isNotSameDayAndLater(previousDate, calendar: calendar)
             }
-            hourly[index].isLastForecastOfDay = lastForecastOfDay
         }
     }
 
@@ -56,7 +57,7 @@ public struct Forecast {
         
         let lastDateAtMidnight = calendar.startOfDay(for: dayAfterLast).addingTimeInterval(-1)
         while currHourlyDate < lastDateAtMidnight {
-            hourly.append(HourlyForecast(date: currHourlyDate, isLastForecastOfDay: true, detail: nil))
+            hourly.append(HourlyForecast(date: currHourlyDate, isFirstForecastOfDay: true, detail: nil))
             currHourlyDate = currHourlyDate.nextDay
         }
     }
@@ -79,7 +80,7 @@ public struct DailyForecast: Identifiable {
 public struct HourlyForecast: Identifiable {
     public let id = UUID()
     public var date: Date
-    public var isLastForecastOfDay: Bool
+    public var isFirstForecastOfDay: Bool
     public let detail: HourlyForecastDetail?
 }
 

@@ -30,10 +30,10 @@ final class ForecastTests: XCTestCase {
         london = nil
     }
 
-    func testLastForecastOfDay() throws {
-        try checkLastForecastDay(location: london)
-        try checkLastForecastDay(location: tokyo)
-        try checkLastForecastDay(location: honolulu)
+    func testFirstForecastOfDay() throws {
+        try checkFirstForecastDay(location: london)
+        try checkFirstForecastDay(location: tokyo)
+        try checkFirstForecastDay(location: honolulu)
     }
     
     func testMissingHourlyForecasts() throws {
@@ -46,30 +46,35 @@ final class ForecastTests: XCTestCase {
                                              file: StaticString = #filePath, line: UInt = #line) throws {
         
         let forecast = try XCTUnwrap (mockAPIService.getForecast(for: location.coordinates, from: [location], in: Bundle(for: Self.self)))
-        let lastForecastOfDay = forecast.hourly.filter { $0.isLastForecastOfDay }
+        let firstForecastOfDay = forecast.hourly.filter { $0.isFirstForecastOfDay }
+        let firstForecastOfDayCount = firstForecastOfDay.count
         let dailyCount = forecast.daily.count
-        let lastForecastOfDayCount = lastForecastOfDay.count
         
-        XCTAssertEqual(dailyCount, lastForecastOfDayCount, file: file, line: line)
+        XCTAssertEqual(dailyCount, firstForecastOfDayCount, file: file, line: line)
     }
     
-    private func checkLastForecastDay(location: Location,
-                                      file: StaticString = #filePath, line: UInt = #line) throws {
+    private func checkFirstForecastDay(location: Location,
+                                       file: StaticString = #filePath, line: UInt = #line) throws {
 
         continueAfterFailure = false
-        let forecast = try XCTUnwrap (mockAPIService.getForecast(for: location.coordinates, from: [location], in: Bundle(for: Self.self)))        
+        let forecast = try XCTUnwrap (mockAPIService.getForecast(for: location.coordinates, from: [location], in: Bundle(for: Self.self)))
         let timezone = TimeZone(secondsFromGMT: forecast.timezoneOffset)!
         var calendar = Calendar.current
         calendar.timeZone = timezone
 
         for (index, hourly) in forecast.hourly.enumerated() {
             let hours = try XCTUnwrap(hourly.date.hours(calendar))
-            let nextHourly = forecast.hourly[safe: index + 1]
-            let expected = nextHourly?.date.isNotSameDayAndLater(hourly.date, calendar: calendar) ?? false || index == (forecast.hourly.count - 1)
-            let found =  hourly.isLastForecastOfDay
-            //if found { print("\(hourly.date.shortDayOfWeek(calendar)) \(hours):00 (\(hourly.detail == nil))") }
-            //print("\(found ? "YES" : "NO ") \(hourly.date.shortDayOfWeek(calendar)) \(hours):00 (\(hourly.detail == nil))")
+            let expected: Bool
+            if let previousHourly = forecast.hourly[safe: index - 1] {
+                expected = hourly.date.isNotSameDayAndLater(previousHourly.date, calendar: calendar)
+             } else {
+                expected = true
+            }
+            let found =  hourly.isFirstForecastOfDay
+            // if found { print("\(hourly.date.shortDayOfWeek(calendar)) \(hours):00 (\(hourly.detail == nil))") }
+            // print("\(found ? "YES" : "NO ") \(hourly.date.shortDayOfWeek(calendar)) \(hours):00 (\(hourly.detail == nil))")
             XCTAssertEqual(found, expected, file: file, line: line)
         }
     }
+
 }

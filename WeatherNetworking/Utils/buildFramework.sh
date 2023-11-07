@@ -23,7 +23,7 @@ then
     exit 1
 fi
 
-BUILD_FOLDER="../../build/$VERSION_FOLDER"
+BUILD_FOLDER="../../build/framework/$VERSION_FOLDER"
 echo '...delete any existing build files'
 rm -r "$BUILD_FOLDER"
 

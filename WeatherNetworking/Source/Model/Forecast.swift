@@ -66,8 +66,8 @@ public struct Forecast {
 public struct DailyForecast: Identifiable {
     public let id = UUID()
     public var date: Date
-    public let sunrise: Int
-    public let sunset: Int
+    public let sunrise: Date
+    public let sunset: Date
     public let pressure: Int
     public let humidity: Int
     public let windSpeed: Decimal

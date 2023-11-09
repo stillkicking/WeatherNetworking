@@ -63,8 +63,8 @@ struct OneCallDataModel: DataModel {
 
 struct DailyDataModel: DataModel {
     var dt: Double
-    var sunrise: Int
-    var sunset: Int
+    var sunrise: Double
+    var sunset: Double
     var pressure: Int
     var humidity: Int
     var wind_deg: Int
@@ -75,8 +75,8 @@ struct DailyDataModel: DataModel {
     
     func toModel() -> DailyForecast {
         DailyForecast.init(date: Date(timeIntervalSince1970: dt),
-                           sunrise: sunrise,
-                           sunset: sunset,
+                           sunrise: Date(timeIntervalSince1970: sunrise),
+                           sunset: Date(timeIntervalSince1970: sunset),
                            pressure: pressure,
                            humidity: humidity,
                            windSpeed: wind_speed,

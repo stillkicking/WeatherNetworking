@@ -63,7 +63,6 @@ final class ForecastTests: XCTestCase {
         calendar.timeZone = timezone
 
         for (index, hourly) in forecast.hourly.enumerated() {
-            let hours = try XCTUnwrap(hourly.date.hours(calendar))
             let expected: Bool
             if let previousHourly = forecast.hourly[safe: index - 1] {
                 expected = hourly.date.isNotSameDayAndLater(previousHourly.date, calendar: calendar)
@@ -71,8 +70,11 @@ final class ForecastTests: XCTestCase {
                 expected = true
             }
             let found =  hourly.isFirstForecastOfDay
-            // if found { print("\(hourly.date.shortDayOfWeek(calendar)) \(hours):00 (\(hourly.detail == nil))") }
-            // print("\(found ? "YES" : "NO ") \(hourly.date.shortDayOfWeek(calendar)) \(hours):00 (\(hourly.detail == nil))")
+            /*
+            let hours = try XCTUnwrap(hourly.date.hours(calendar))
+            if found { print("\(hourly.date.shortDayOfWeek(calendar)) \(hours):00 (\(hourly.detail == nil))") }
+            print("\(found ? "YES" : "NO ") \(hourly.date.shortDayOfWeek(calendar)) \(hours):00 (\(hourly.detail == nil))")
+            */
             XCTAssertEqual(found, expected, file: file, line: line)
         }
     }

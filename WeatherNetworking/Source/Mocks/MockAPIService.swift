@@ -79,8 +79,6 @@ extension Forecast {
     static let secondsInEachDay: Double = secondsInEachHour * 24
     
     mutating func resetDates() {
-        timezoneOffset = Calendar.current.timeZone.secondsFromGMT()
-        
         let dailyStartDate = Date()
         for i in 0..<daily.count {
             daily[i].date = dailyStartDate.addingTimeInterval(Double(i) * Forecast.secondsInEachDay)

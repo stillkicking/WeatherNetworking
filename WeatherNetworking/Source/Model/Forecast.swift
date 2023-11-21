@@ -68,6 +68,10 @@ public struct DailyForecast: Identifiable {
     public var date: Date
     public let sunrise: Date
     public let sunset: Date
+    public let moonrise: Date
+    public let moonset: Date
+    public let moonPhase: Decimal
+    public let summary: String
     public let pressure: Int
     public let humidity: Int
     public let windSpeed: Decimal

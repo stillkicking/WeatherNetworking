@@ -65,6 +65,10 @@ struct DailyDataModel: DataModel {
     var dt: Double
     var sunrise: Double
     var sunset: Double
+    var moonrise: Double
+    var moonset: Double
+    var moon_phase: Decimal
+    var summary: String
     var pressure: Int
     var humidity: Int
     var wind_deg: Int
@@ -77,6 +81,10 @@ struct DailyDataModel: DataModel {
         DailyForecast.init(date: Date(timeIntervalSince1970: dt),
                            sunrise: Date(timeIntervalSince1970: sunrise),
                            sunset: Date(timeIntervalSince1970: sunset),
+                           moonrise: Date(timeIntervalSince1970: moonrise),
+                           moonset: Date(timeIntervalSince1970: moonset),
+                           moonPhase: moon_phase,
+                           summary: summary,
                            pressure: pressure,
                            humidity: humidity,
                            windSpeed: wind_speed,

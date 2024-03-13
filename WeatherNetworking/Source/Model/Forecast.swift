@@ -96,7 +96,6 @@ public struct HourlyForecastDetail {
     public let dew_point: Decimal
     public let uvIndex: Decimal
     public let cloudCoverage: Int
-    public let visibility: Int
     public let precipitation: Decimal
     public let windSpeed: Decimal
     public let windDirection: Int

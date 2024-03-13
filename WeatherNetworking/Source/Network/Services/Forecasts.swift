@@ -104,7 +104,6 @@ struct HourlyDataModel: DataModel {
     var dew_point: Decimal
     var uvi: Decimal
     var clouds: Int
-    var visibility: Int
     var pop: Decimal
     var wind_speed: Decimal
     var wind_deg: Int
@@ -119,7 +118,6 @@ struct HourlyDataModel: DataModel {
                                           dew_point: dew_point,
                                           uvIndex: uvi,
                                           cloudCoverage: clouds,
-                                          visibility: visibility,
                                           precipitation: pop,
                                           windSpeed: wind_speed,
                                           windDirection: wind_deg,

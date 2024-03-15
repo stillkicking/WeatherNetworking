@@ -8,6 +8,7 @@
 import Foundation
 
 public struct Forecast {
+    public let id = UUID()
     public var location: Location?
     public let timezone: String
     /// timezone offset in seconds from GMT

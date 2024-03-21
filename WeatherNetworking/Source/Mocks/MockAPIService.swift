@@ -56,7 +56,7 @@ public class MockAPIService: APIServiceProtocol {
         let filename = "OneCall(\(coordinates.latitude.rounded(3)),\(coordinates.longitude.rounded(3)))"
         let dataModel: OneCallDataModel = try decodeJSON(from: filename, in: bundle)
         var forecast = dataModel.toModel()
-        forecast.loadLocation(with: (dataModel.lat, dataModel.lon), from: locations)
+        forecast.loadLocation(with: DecimalCoordinates(latitude: dataModel.lat, longitude: dataModel.lon), from: locations)
         forecast.resetDates()
         forecast.setHourlyFirstForecastOfDay()
         return forecast

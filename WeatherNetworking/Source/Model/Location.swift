@@ -8,9 +8,13 @@
 import Foundation
 import CoreLocation
 
-public typealias DecimalCoordinates = (latitude: Decimal, longitude: Decimal)
+public struct DecimalCoordinates: Hashable {
+    public let latitude: Decimal
+    public let longitude: Decimal
+}
 
-public class Location {
+public class Location: Identifiable {
+    public let id = UUID()
     public var coordinates: DecimalCoordinates
     public var name: String
     public var state: String
@@ -26,9 +30,23 @@ public class Location {
                 name: String,
                 country: String = "",
                 state: String = "") {
-        self.coordinates = (Decimal(coordinates.latitude), Decimal(coordinates.longitude))
+        self.coordinates = DecimalCoordinates(latitude: Decimal(coordinates.latitude),
+                                              longitude: Decimal(coordinates.longitude))
         self.country = country
         self.name = name
         self.state = state
+    }
+}
+
+extension Location: Equatable, Hashable {
+    public static func == (lhs: Location, rhs: Location) -> Bool {
+        lhs.coordinates == rhs.coordinates &&
+        lhs.country == rhs.country &&
+        lhs.name == rhs.name &&
+        lhs.state == rhs.state
+    }
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
     }
 }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Forecast {
+public struct Forecast: Identifiable, Hashable {
     public let id = UUID()
     public var location: Location?
     public let timezone: String
@@ -64,7 +64,7 @@ public struct Forecast {
     }
 }
 
-public struct DailyForecast: Identifiable {
+public struct DailyForecast: Identifiable, Hashable {
     public let id = UUID()
     public var date: Date
     public let sunrise: Date
@@ -82,14 +82,14 @@ public struct DailyForecast: Identifiable {
     public let temperature: TemperatureForecast
 }
 
-public struct HourlyForecast: Identifiable {
+public struct HourlyForecast: Identifiable, Hashable {
     public let id = UUID()
     public var date: Date
     public var isFirstForecastOfDay: Bool
     public let detail: HourlyForecastDetail?
 }
 
-public struct HourlyForecastDetail {
+public struct HourlyForecastDetail: Hashable {
     public let temp: Decimal
     public let feels_like: Decimal
     public let pressure: Int
@@ -104,7 +104,7 @@ public struct HourlyForecastDetail {
     public let displayable: [DisplayableForecast]
 }
 
-public struct TemperatureForecast {
+public struct TemperatureForecast: Hashable {
     public let day: Decimal
     public let min: Decimal
     public let max: Decimal
@@ -113,7 +113,7 @@ public struct TemperatureForecast {
     public let morn: Decimal
 }
 
-public struct DisplayableForecast {
+public struct DisplayableForecast: Hashable {
     public let id: Int
     public let main: String
     public let description: String

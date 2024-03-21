@@ -25,7 +25,7 @@ extension APIService {
             get(endpoint: .oneCall(for: ($0.coordinates.latitude, $0.coordinates.longitude)))
                 .map{
                     var m = $0.toModel()
-                    m.loadLocation(with: ($0.lat, $0.lon), from: locations)
+                    m.loadLocation(with: DecimalCoordinates(latitude: $0.lat, longitude: $0.lon), from: locations)
                     return m
                 }
             .eraseToAnyPublisher() }

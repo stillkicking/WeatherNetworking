@@ -38,8 +38,7 @@ final class ForecastTests: XCTestCase {
     
     func testMissingHourlyForecasts() throws {
         try checkMissingHourlyForecasts(location: london)
-        try checkMissingHourlyForecasts(location: tokyo)
-        // try checkMissingHourlyForecasts(location: honolulu) // extra day added on - check this out
+        try checkMissingHourlyForecasts(location: tokyo) // currently fails with an extra day added on - check this out
     }
     
     private func checkMissingHourlyForecasts(location: Location,

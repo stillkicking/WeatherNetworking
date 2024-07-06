@@ -11,6 +11,7 @@ import Combine
 public protocol APIServiceProtocol {
     func getForecasts(locations: [Location]) -> AnyPublisher<Result<[Forecast], Error>, Never>
     func getLocations(query: String) -> AnyPublisher<Result<[LocationDataModel], Error>, Never>
+    func getForecastsAsyncAwait(for locations: [Location]) async throws -> [Forecast]
 }
 
 public enum APIError: LocalizedError {
@@ -32,7 +33,7 @@ public enum APIError: LocalizedError {
         case .invalidResponse:
             return "Invalid response received"
         case .authError:
-            return "Authorization failure - the OpenWeather apiKey is likely out-of-date. Please contact the app's author."
+            return "Authorization failure"
         case .clientError(let message):
             return "Client Error: \(message)"
         case .serverError(let message):
@@ -55,7 +56,7 @@ private struct APIErrorMessage: Decodable {
     }
 }
 
-/// Provides Combine-enabled wrapper services to the OpenWeather API.
+/// Provides Combine-enabledand asyncAwait-enabled wrapper services to the OpenWeather API.
 public class APIService: APIServiceProtocol {
     
     public static let shared = APIService()
@@ -109,5 +110,13 @@ public class APIService: APIServiceProtocol {
                 return Just([T].init()).eraseToAnyPublisher()
             }
             .eraseToAnyPublisher()
+    }
+    
+    func getAsyncAwait<T: Decodable>(_ endpoint: Endpoint<T>) async throws -> T {
+        print("JJ: calling API URL \(endpoint.request!.url!)")
+        let (data, _) = try await URLSession.shared.data(from: endpoint.request!.url!)
+        let response: T = try JSONDecoder().decode(T.self, from: data)
+        print("JJ: response is \(response)")
+        return response
     }
 }

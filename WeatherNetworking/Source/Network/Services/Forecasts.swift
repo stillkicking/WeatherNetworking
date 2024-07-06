@@ -13,6 +13,29 @@ extension APIService {
     /// Publishes the forecasts associated with an array of locations.
     /// - Parameter locations: array of locations
     /// - Returns: array of forecasts
+    public func getForecastsAsyncAwait(for locations: [Location]) async throws -> [Forecast] {
+        guard locations.isEmpty == false else {
+            return [Forecast]()
+        }
+
+        return try await withThrowingTaskGroup(of: Forecast.self) { group in
+            var collected = [Forecast]()
+            for location in locations {
+                let coords = (location.coordinates.latitude, location.coordinates.longitude)
+                group.addTask {
+                    try await self.getAsyncAwait(.oneCall(for: coords)).toModel()
+                }
+            }
+            for try await value in group {
+                collected.append(value)
+            }
+            return collected
+        }
+    }
+    
+    /// Publishes the forecasts associated with an array of locations.
+    /// - Parameter locations: array of locations
+    /// - Returns: publisher of an array of forecasts wrapped in a Result enum
     public func getForecasts(locations: [Location]) -> AnyPublisher<Result<[Forecast], Error>, Never> {
         guard locations.isEmpty == false else {
             let emptyResult: Result<[Forecast], Error> = .success([])

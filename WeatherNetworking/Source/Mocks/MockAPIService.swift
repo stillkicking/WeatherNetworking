@@ -20,9 +20,9 @@ public class MockAPIService: APIServiceProtocol {
     
     /// Publishes the mocked forecasts associated with an array of locations. Daily and hourly timestamps loaded form the mock data is overwritten to reflect the current date.
     ///
-    ///  Mock forecast data must be available in JSON files with names formated as OneCall(<latitude>,<longitude>).json, e.g. OneCall(35.71,139.454).json. JSON structure to be added to this doc asap.
+    /// Mock forecast data must be available in JSON files with names formated as OneCall(<latitude>,<longitude>).json, e.g. OneCall(35.71,139.454).json. JSON structure to be added to this doc asap.
     /// - Parameter locations: array of locations
-    /// - Returns: array of forecasts
+    /// - Returns: publisher of an array of forecasts wrapped in a Result enum
     public func getForecasts(locations: [Location]) -> AnyPublisher<Result<[Forecast], Error>, Never> {
         guard locations.isEmpty == false else {
             let emptyResult: Result<[Forecast], Error> = .success([])
@@ -43,6 +43,19 @@ public class MockAPIService: APIServiceProtocol {
 
         let result: Result<[Forecast], Error> = .success(forecasts)
         return Just(result).eraseToAnyPublisher()
+    }
+
+    
+    /// Asynchronously returns the mocked forecasts associated with an array of locations. Daily and hourly timestamps loaded form the mock data is overwritten to reflect the current date.
+    ///
+    /// Mock forecast data must be available in JSON files with names formated as OneCall(<latitude>,<longitude>).json, e.g. OneCall(35.71,139.454).json. JSON structure to be added to this doc asap.
+    /// - Parameter locations: array of locations
+    /// - Returns: array of forecasts
+    public func getForecastsAsyncAwait(for locations: [Location]) async throws -> [Forecast] {
+        guard locations.isEmpty == false else {
+            return [Forecast]()
+        }
+        return try locations.map {try getForecast(for: $0.coordinates, from: locations) }
     }
 
     /// Publishes the mocked forecast associated with a set of coordinates (these coordinates must match that of a location in a given array of locations so that information such as location name can be injected into the returned object). Daily and hourly timestamps loaded from the mock data are reset to reflect a call date at the current time.

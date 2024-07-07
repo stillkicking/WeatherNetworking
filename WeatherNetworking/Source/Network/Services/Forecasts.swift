@@ -18,16 +18,19 @@ extension APIService {
             return [Forecast]()
         }
 
-        return try await withThrowingTaskGroup(of: Forecast.self) { group in
+        return try await withThrowingTaskGroup(of: OneCallDataModel.self) { group in
             var collected = [Forecast]()
             for location in locations {
                 let coords = (location.coordinates.latitude, location.coordinates.longitude)
                 group.addTask {
-                    try await self.getAsyncAwait(.oneCall(for: coords)).toModel()
+                    try await self.getAsyncAwait(.oneCall(for: coords))
                 }
             }
             for try await value in group {
-                collected.append(value)
+                var forecast = value.toModel()
+                // see Forecast.loadLocation for the reason why we need to call that method here
+                forecast.loadLocation(with: DecimalCoordinates(latitude: value.lat, longitude: value.lon), from: locations)
+                collected.append(forecast)
             }
             return collected
         }

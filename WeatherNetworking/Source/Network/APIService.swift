@@ -113,10 +113,8 @@ public class APIService: APIServiceProtocol {
     }
     
     func getAsyncAwait<T: Decodable>(_ endpoint: Endpoint<T>) async throws -> T {
-        print("JJ: calling API URL \(endpoint.request!.url!)")
         let (data, _) = try await URLSession.shared.data(from: endpoint.request!.url!)
         let response: T = try JSONDecoder().decode(T.self, from: data)
-        print("JJ: response is \(response)")
         return response
     }
 }

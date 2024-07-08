@@ -32,6 +32,7 @@ extension APIService {
                 forecast.loadLocation(with: DecimalCoordinates(latitude: value.lat, longitude: value.lon), from: locations)
                 collected.append(forecast)
             }
+            collected.simpleSort(by: locations)
             return collected
         }
     }
@@ -39,6 +40,7 @@ extension APIService {
     /// Publishes the forecasts associated with an array of locations.
     /// - Parameter locations: array of locations
     /// - Returns: publisher of an array of forecasts wrapped in a Result enum
+    @available(*, deprecated, message: "Please use getForecastsAsyncAwait instead")
     public func getForecasts(locations: [Location]) -> AnyPublisher<Result<[Forecast], Error>, Never> {
         guard locations.isEmpty == false else {
             let emptyResult: Result<[Forecast], Error> = .success([])

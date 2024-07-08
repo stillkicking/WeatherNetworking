@@ -26,15 +26,25 @@ public class Location: Identifiable {
         return "\(name)\(stateDescr)"
     }
     
-    public init(coordinates: CLLocationCoordinate2D,
+    public init(coordinates: DecimalCoordinates,
                 name: String,
                 country: String = "",
                 state: String = "") {
-        self.coordinates = DecimalCoordinates(latitude: Decimal(coordinates.latitude),
-                                              longitude: Decimal(coordinates.longitude))
+        self.coordinates = coordinates
         self.country = country
         self.name = name
         self.state = state
+    }
+    
+    public convenience init(coordinates: CLLocationCoordinate2D,
+                            name: String,
+                            country: String = "",
+                            state: String = "") {
+        self.init(coordinates: DecimalCoordinates(latitude: Decimal(coordinates.latitude),
+                                                  longitude: Decimal(coordinates.longitude)),
+                  name: name,
+                  country: country,
+                  state: state)
     }
 }
 
@@ -48,5 +58,22 @@ extension Location: Equatable, Hashable {
     
     public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
+    }
+}
+
+public extension Array where Element == Location {
+
+    /// Return a Location matching the supplied coordinates. Those coordinates may have been returned by an API call, in which case they will not necessarily
+    /// match those sent in the request - some precision can be lost for some reason. To successfull match the coordinates, rounding to two decimal places seems
+    /// to allow the match.
+    func location(withPreciseCoords coords: DecimalCoordinates) -> Location? {
+        let places = 2
+        let latitude = coords.latitude.rounded(places)
+        let longitude = coords.longitude.rounded(places)
+        
+        return self.first {
+            latitude == $0.coordinates.latitude.rounded(places) &&
+            longitude == $0.coordinates.longitude.rounded(places)
+        }
     }
 }

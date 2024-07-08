@@ -41,6 +41,57 @@ final class ForecastTests: XCTestCase {
         try checkMissingHourlyForecasts(location: tokyo)
     }
     
+    func testLoadLocation() throws {
+        let locations: [Location] = [honolulu, tokyo, london].compactMap { $0 }
+        let preciseLocation = honolulu.copy().withMorePreciseCoordinates()
+        
+        var forecast = Forecast(location: nil, timezone: "", timezoneOffset: 0, daily: [], hourly: [])
+        XCTAssertNil(forecast.location)
+        forecast.loadLocation(with: preciseLocation.coordinates, from: locations)
+        XCTAssertEqual(forecast.location, honolulu)
+    }
+    
+    func testSimpleSort() {
+        let forecastLocations = [london, tokyo, honolulu].compactMap { $0 }
+        continueAfterFailure = false
+
+        checkSimpleSort(forecastLocations: forecastLocations,
+                        sortedBy: forecastLocations)
+        
+        checkSimpleSort(forecastLocations: forecastLocations,
+                        sortedBy: [honolulu, tokyo, london])
+        
+        checkSimpleSort(forecastLocations: forecastLocations,
+                        sortedBy: [honolulu, london, tokyo])
+
+        checkSimpleSort(forecastLocations: forecastLocations,
+                        sortedBy: [],
+                        expected: [london, tokyo, honolulu])
+ 
+        checkSimpleSort(forecastLocations: forecastLocations,
+                        sortedBy: [tokyo],
+                        expected: [london, tokyo, honolulu])
+
+        checkSimpleSort(forecastLocations: forecastLocations,
+                        sortedBy: [tokyo, london],
+                        expected: [tokyo, honolulu, london])
+        
+        checkSimpleSort(forecastLocations: forecastLocations,
+                        sortedBy: [honolulu, tokyo],
+                        expected: [london, honolulu, tokyo])
+    }
+
+    private func checkSimpleSort(forecastLocations: [Location],
+                                 sortedBy sortByLocations: [Location],
+                                 expected: [Location]? = nil,
+                                 file: StaticString = #filePath, line: UInt = #line) {
+        
+        var forecasts = forecastLocations.map { Forecast(location: $0, timezone: "", timezoneOffset: 0, daily: [], hourly: []) }
+        let expectedLocations = expected ?? sortByLocations
+        forecasts.simpleSort(by: sortByLocations)
+        XCTAssertEqual(forecasts.compactMap { $0.location }, expectedLocations, file: file, line: line)
+    }
+
     private func checkMissingHourlyForecasts(location: Location,
                                              file: StaticString = #filePath, line: UInt = #line) throws {
         
@@ -77,5 +128,18 @@ final class ForecastTests: XCTestCase {
             XCTAssertEqual(found, expected, file: file, line: line)
         }
     }
+}
 
+private extension Location {
+    
+    func copy() -> Location {
+        Location(coordinates: self.coordinates, name: self.name, country: self.country, state: self.state)
+    }
+    
+    func withMorePreciseCoordinates(addedPrecision: Decimal = 0.000666) -> Location {
+        let newCoords = DecimalCoordinates(latitude: self.coordinates.latitude + addedPrecision,
+                                           longitude: self.coordinates.longitude + addedPrecision)
+        self.coordinates = newCoords
+        return self
+    }
 }

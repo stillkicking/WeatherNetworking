@@ -17,18 +17,10 @@ public struct Forecast: Identifiable, Hashable {
     public var hourly: [HourlyForecast]
 
     /// When loading forecast information from the API service, only the coords are supplied, not the location name, etc. So we have to be able to inject these - we do that by matching the
-    /// returned coordinates with those in the locations used in the intial request. Sounds straightforward, but unfortunately the API does not necessarily return exactly the same coordinates
-    /// as was requested - some precision is lost, for some reason. Two decimal places seem OK, however, so we restrict the match to just those two decimal places.
+    /// returned coordinates with those in the locations used in the intial request....
     mutating func loadLocation(with coords: DecimalCoordinates,
                                from locations: [Location]) {
-        let places = 2
-        let latitude = coords.latitude.rounded(places)
-        let longitude = coords.longitude.rounded(places)
-        
-        self.location = locations.first{
-            latitude == $0.coordinates.latitude.rounded(places) &&
-            longitude == $0.coordinates.longitude.rounded(places)
-        }
+        location = locations.location(withPreciseCoords: coords)
     }
     
     mutating func setHourlyFirstForecastOfDay() {
@@ -60,6 +52,21 @@ public struct Forecast: Identifiable, Hashable {
         while currHourlyDate < lastDateAtMidnight {
             hourly.append(HourlyForecast(date: currHourlyDate, isFirstForecastOfDay: true, detail: nil))
             currHourlyDate = currHourlyDate.nextDay
+        }
+    }
+}
+
+
+public extension Array where Element == Forecast {
+   
+    // A 'simple' sort, i.e. not particularly complex code. Not the most efficient, but in reality we will be dealing
+    // here with a very small number of locations, so performance is secondary to simplicity.
+    mutating func simpleSort(by locations: [Location]) {
+
+        self.sort{ e0, e1 in
+            let i = locations.firstIndex(where: { loc in e0.location?.coordinates == loc.coordinates }) ?? 0
+            let j = locations.firstIndex(where: { loc in e1.location?.coordinates == loc.coordinates }) ?? 0
+            return i < j
         }
     }
 }
